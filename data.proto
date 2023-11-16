@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package model;
+option go_package = "/model";
+
+// @gogs:Components
+message Components {
+    BaseWorld BaseWorld = 1;
+}
+
+message BaseWorld {
+    BindUser BindUser = 1;
+
+    BindSuccess BindSuccess = 2;
+
+    OutgoingMessage OutgoingMessage = 3;
+
+    IncomingMessage IncomingMessage = 4;
+}
+// bind user to the server, name should be unique
+message BindUser {
+    string name = 1;
+}
+
+// bind success, server send this message to client
+// @gogs:ServerMessage
+message BindSuccess {
+    string uid = 1;
+}
+
+// client send message to server and server send message to client with specific name
+message OutgoingMessage {
+    // who receive the message
+    string recipient = 1;
+    // the message content
+    string content = 2;
+}
+
+// user receive message from server
+// @gogs:ServerMessage
+message IncomingMessage {
+    // who send the message
+    string sender = 1;
+    // the message content
+    string content = 2;
+}
