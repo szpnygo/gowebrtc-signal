@@ -3,7 +3,7 @@ module github.com/szpnygo/gowebrtc-signal
 go 1.21.3
 
 require (
-	github.com/metagogs/gogs v0.2.3
+	github.com/metagogs/gogs v0.2.5
 	go.uber.org/zap v1.26.0
 	google.golang.org/protobuf v1.31.0
 )
