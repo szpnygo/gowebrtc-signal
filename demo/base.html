@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Chat</title>
+    <script>
+        let socket;
+
+        function connect() {
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.close();
+            }
+
+            const name = document.getElementById('name').value;
+            socket = new WebSocket('ws://127.0.0.1:8888/base');
+
+            socket.onopen = function () {
+                const bindUserMsg = JSON.stringify({ action: "BindUser", name: name });
+                socket.send(bindUserMsg);
+            };
+
+            socket.onmessage = function (event) {
+                const messagesArea = document.getElementById('messages');
+                if (event.data instanceof Blob) {
+                    // Read the blob as text
+                    event.data.text().then(text => {
+                        messagesArea.textContent += text + '\n';
+                    });
+                } else {
+                    // Handle other types of messages
+                    messagesArea.textContent += event.data + '\n';
+                }
+            };
+        }
+
+        function sendMessage() {
+            const recipient = document.getElementById('recipient').value;
+            const message = document.getElementById('message').value;
+            const outgoingMsg = JSON.stringify({ action: "OutgoingMessage", recipient: recipient, content: message });
+
+            socket.send(outgoingMsg);
+        }
+    </script>
+</head>
+
+<body>
+    <h1>WebSocket Chat</h1>
+
+    <div>
+        <input type="text" id="name" placeholder="Enter your name">
+        <button onclick="connect()">Login</button>
+    </div>
+
+    <div>
+        <input type="text" id="recipient" placeholder="Recipient">
+        <input type="text" id="message" placeholder="Message">
+        <button onclick="sendMessage()">Send Message</button>
+    </div>
+
+    <h2>Messages</h2>
+    <pre id="messages"></pre>
+</body>
+
+</html>

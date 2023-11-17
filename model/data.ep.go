@@ -36,7 +36,7 @@ func _BaseWorldComponent_OutgoingMessage_Handler(srv interface{}, ctx context.Co
 
 var _BaseWorldComponentDesc = component.ComponentDesc{
 	ComponentName:  "BaseWorldComponent",
-	ComponentIndex: 1, //  to module index
+	ComponentIndex: 1, // equal to module index
 	ComponentType:  (*Component)(nil),
 	Methods: []component.ComponentMethodDesc{
 		{
@@ -57,6 +57,14 @@ var _BaseWorldComponentDesc = component.ComponentDesc{
 		},
 		{
 			MethodIndex: packet.CreateAction(packet.ServicePacket, 1, 3), // 0x810003 8454147
+			FieldType:   reflect.TypeOf(BindFail{}),
+			Handler:     nil,
+			FieldHandler: func() interface{} {
+				return new(BindFail)
+			},
+		},
+		{
+			MethodIndex: packet.CreateAction(packet.ServicePacket, 1, 4), // 0x810004 8454148
 			FieldType:   reflect.TypeOf(OutgoingMessage{}),
 			Handler:     _BaseWorldComponent_OutgoingMessage_Handler,
 			FieldHandler: func() interface{} {
@@ -64,11 +72,19 @@ var _BaseWorldComponentDesc = component.ComponentDesc{
 			},
 		},
 		{
-			MethodIndex: packet.CreateAction(packet.ServicePacket, 1, 4), // 0x810004 8454148
+			MethodIndex: packet.CreateAction(packet.ServicePacket, 1, 5), // 0x810005 8454149
 			FieldType:   reflect.TypeOf(IncomingMessage{}),
 			Handler:     nil,
 			FieldHandler: func() interface{} {
 				return new(IncomingMessage)
+			},
+		},
+		{
+			MethodIndex: packet.CreateAction(packet.ServicePacket, 1, 6), // 0x810006 8454150
+			FieldType:   reflect.TypeOf(OutgoingFail{}),
+			Handler:     nil,
+			FieldHandler: func() interface{} {
+				return new(OutgoingFail)
 			},
 		},
 	},

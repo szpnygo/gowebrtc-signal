@@ -18,6 +18,7 @@ func main() {
 	authKey := os.Getenv("AUTH_KEY")
 
 	app := gogs.NewApp(config)
+	app.UseDefaultEncodeJSONWithHeader()
 	app.AddAcceptor(acceptor.NewWSAcceptor(&acceptor.AcceptorConfig{
 		HttpPort: 8888,
 		Name:     "base",
